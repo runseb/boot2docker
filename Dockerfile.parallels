@@ -1,4 +1,4 @@
-FROM dockercore/boot2docker:docker
+FROM dockercore/boot2docker:k8s
 
 RUN { \
 		echo 'VARIANT="Parallels"'; \

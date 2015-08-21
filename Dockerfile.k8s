@@ -1,0 +1,33 @@
+FROM dockercore/boot2docker:docker
+
+RUN apt-get update && apt-get -y install curl
+
+#Install Kubelet and Kubelet manifest
+
+ENV K8S_VERSION=v1.0.3
+
+RUN curl -sO https://storage.googleapis.com/kubernetes-release/release/v1.0.3/bin/linux/amd64/kubelet
+RUN mv kubelet /usr/bin/kubelet
+RUN chmod +x /usr/bin/kubelet
+RUN mkdir -p /etc/kubernetes/manifests/
+COPY scripts/kubernetes.yaml /etc/kubernetes/manifests/kubernetes.yaml
+
+#Create Kubelet service
+
+RUN {           echo '[Unit]'; \
+                echo 'Description=Kubernetes Kubelet'; \
+                echo 'Documentation=https://github.com/kubernetes/kubernetes'; \
+                echo; \
+		echo '[Service]'; \
+                echo 'ExecStartPre=/usr/bin/mkdir -p /etc/kubernetes/manifests'; \
+		echo 'ExecStart=/usr/bin/kubelet \'; \
+                echo '--api-servers=http://127.0.0.1:8080 \'; \
+                echo '--allow-privileged=true \'; \
+                echo '--config=/etc/kubernetes/manifests \'; \
+                echo '--v=2'; \
+                echo 'Restart=on-failure'; \
+                echo 'RestartSec=5'; \
+                echo; \
+                echo '[Install]'; \
+                echo 'WantedBy=multi-user.target'; \
+	} > /etc/systemd/system/kubelet.service
