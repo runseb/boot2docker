@@ -19,7 +19,6 @@ RUN {           echo '[Unit]'; \
                 echo 'Documentation=https://github.com/kubernetes/kubernetes'; \
                 echo; \
 		echo '[Service]'; \
-                echo 'ExecStartPre=/usr/bin/mkdir -p /etc/kubernetes/manifests'; \
 		echo 'ExecStart=/usr/bin/kubelet \'; \
                 echo '--api-servers=http://127.0.0.1:8080 \'; \
                 echo '--allow-privileged=true \'; \
