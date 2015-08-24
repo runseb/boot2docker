@@ -30,3 +30,6 @@ RUN {           echo '[Unit]'; \
                 echo '[Install]'; \
                 echo 'WantedBy=multi-user.target'; \
 	} > /etc/systemd/system/kubelet.service
+
+COPY scripts/k8s.sh /etc/boot2docker/hooks/after-docker.d/k8s.sh
+
